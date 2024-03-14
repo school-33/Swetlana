@@ -60,55 +60,54 @@
             var yPos = 150;
             var grav = 1.5;
 
-            var gameOver = false; // Флаг для отслеживания окончания игры
+            function draw() {
+                ctx.drawImage(bg, 0, 0);
 
-function draw() {
-    if (gameOver) {
-        return; // Остановка игры
-    }
+                for(var i = 0; i < pipe.length; i++) {
+                    ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y);
+                    ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeUp.height + gap);
 
-    ctx.drawImage(bg, 0, 0);
+                    pipe[i].x--;
 
-    for(var i = 0; i < pipe.length; i++) {
-        ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y);
-        ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeUp.height + gap);
+                    if(pipe[i].x === 125) {
+                        pipe.push({
+                            x: cvs.width,
+                            y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height
+                        });
+                    }
 
-        pipe[i].x--;
+                    if(xPos + bird.width >= pipe[i].x
+                       && xPos <= pipe[i].x + pipeUp.width
+                       && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap)
+                       || yPos + bird.height >= cvs.height - fg.height) {
+                        // Остановка игры
+                        return;
+                    }
 
-        if(pipe[i].x === 125) {
-            pipe.push({
-                x: cvs.width,
-                y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height
-            });
-        }
+                    if(pipe[i].x === 5) {
+                        score++;
+                    }
+                }
 
-        if(xPos + bird.width >= pipe[i].x
-           && xPos <= pipe[i].x + pipeUp.width
-           && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap)
-           || yPos + bird.height >= cvs.height - fg.height) {
-            // Устанавливаем флаг окончания игры
-            gameOver = true;
-        }
+                ctx.drawImage(fg, 0, cvs.height - fg.height);
+                ctx.drawImage(bird, xPos, yPos);
 
-        if(pipe[i].x === 5) {
-            score++;
-        }
-    }
+                yPos += grav;
+                ctx.fillStyle = "#000";
+                ctx.font = "24px Verdana";
+                ctx.fillText("Счет: " + score, 10, cvs.height - 20);
 
-    ctx.drawImage(fg, 0, cvs.height - fg.height);
-    ctx.drawImage(bird, xPos, yPos);
+                requestAnimationFrame(draw);
+            }
 
-    yPos += grav;
-    ctx.fillStyle = "#000";
-    ctx.font = "24px Verdana";
-    ctx.fillText("Счет: " + score, 10, cvs.height - 20);
-
-    requestAnimationFrame(draw);
-}
-
+            bird.onload = function() {
+                draw();
+            };
+        });
         document.getElementById("restartButton").addEventListener("click", function() {
             location.reload();  // Перезапускаем игру при нажатии на кнопку
         });
     </script>
 </body>
 </html>
+Сделай так, чтобы при окончании игры игра просто останавливалась
