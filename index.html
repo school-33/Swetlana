@@ -40,14 +40,11 @@
 
             var gap = 90;
 
-            document.addEventListener("keydown", moveUp);
+            document.addEventListener("click", jump);
             document.addEventListener("touchstart", jump);
 
-            function moveUp() {
-                yPos -= 25;
-            }
             function jump() {
-            yPos -= 25;
+                yPos -= 25;
             }
 
             var pipe = [];
@@ -61,7 +58,6 @@
             var xPos = 10;
             var yPos = 150;
             var grav = 1.5;
-            
 
             function draw() {
                 ctx.drawImage(bg, 0, 0);
@@ -83,7 +79,8 @@
                        && xPos <= pipe[i].x + pipeUp.width
                        && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap)
                        || yPos + bird.height >= cvs.height - fg.height) {
-                        location.reload(); // Перезагрузка страницы
+                        // Остановка игры
+                        return;
                     }
 
                     if(pipe[i].x === 5) {
@@ -102,9 +99,10 @@
                 requestAnimationFrame(draw);
             }
 
-            pipeBottom.onload = draw;
+            bird.onload = function() {
+                draw();
+            };
         });
     </script>
 </body>
 </html>
-
