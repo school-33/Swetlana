@@ -1,110 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Светлана!</title>
-   <style>
-       body, html {
-           height: 100%;
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           margin: 0;
-           background-color: #f0f0f0;
-       }
-       canvas {
-           border: 1px solid #333;
-       }
-   </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Светлана!</title>
+ <style>
+     body, html {
+         height: 100%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin: 0;
+         background-color: #f0f0f0;
+     }
+     canvas {
+         border: 1px solid #333;
+     }
+ </style>
 </head>
-<body>
-   <canvas id="canvas" width="288" height="512"></canvas>
-   <button id="restartButton" style="display: none;">Перезапустить игру</button>
-   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var cvs = document.getElementById("canvas");
-      var ctx = cvs.getContext("2d");
-    
-      var bird = new Image();
-      var bg = new Image();
-      var fg = new Image();
-      var pipeUp = new Image();
-      var pipeBottom = new Image();
-    
-      bird.src = "xflappy_bird_bird.png";
-      bg.src = "xflappy_bird_bg.png.pagespeed.ic.PTIe4jSVfO.png";
-      fg.src = "xflappy_bird_fg.png.pagespeed.ic.O7woT1tHrR.png";
-      pipeUp.src = "xflappy_bird_pipeUp.png.pagespeed.ic.C2APYlZeLS.png";
-      pipeBottom.src = "xflappy_bird_pipeBottom.png.pagespeed.ic.l4xtKTx5NW.png";
-    
-      var gap = 90;
-      var gameOver = false; // Добавлена переменная для отслеживания окончания игры
-    
-      document.addEventListener("click", jump);
-      document.addEventListener("touchstart", jump);
-    
-      function jump() {
-        yPos -= 25;
-      }
-    
-      var pipe = [];
-    
-      pipe[0] = {
-        x: cvs.width,
-        y: 0
-      }
-    
-      var score = 0;
-      var xPos = 10;
-      var yPos = 150;
-      var grav = 1.5;
-    
-      function draw() {
-        ctx.drawImage(bg, 0, 0);
-    
-        for(var i = 0; i < pipe.length; i++) {
-          ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y);
-          ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeUp.height + gap);
-    
-          pipe[i].x--;
-    
-          if(pipe[i].x === 125) {
-            pipe.push({
-              x: cvs.width,
-              y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height
-            });
-          }
-    
-          if(xPos + bird.width >= pipe[i].x
-             && xPos <= pipe[i].x + pipeUp.width
-             && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap)
-            || yPos + bird.height >= cvs.height - fg.height) {
-            gameOver = true; // Установка значения gameOver при окончании игры
-            return;
-          }
-    
-          if(pipe[i].x === 5) {
-            score++;
-          }
-        }
-    
-        if (gameOver) {
-          document.getElementById("restartButton").style.display = "block"; // Показать кнопку после окончания игры
-        }
-    
-        requestAnimationFrame(draw);
-      }
-    
-      bird.onload = function() {
-        draw();
-      };
+<body style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100vh;">
+    <canvas id="canvas" width="288" height="512"></canvas>
+    <button id="restartButton" onclick="location.reload();">Перезапустить игру</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var cvs = document.getElementById("canvas");
+            var ctx = cvs.getContext("2d");
 
-      document.getElementById("restartButton").addEventListener("click", function() {
-        location.reload(); // Перезагрузка страницы для перезапуска игры
-      });
-    });
-    </script>    
+            var bird = new Image();
+            var bg = new Image();
+            var fg = new Image();
+            var pipeUp = new Image();
+            var pipeBottom = new Image();
+
+            bird.src = "xflappy_bird_bird .png";
+            bg.src = "xflappy_bird_bg.png.pagespeed.ic.PTIe4jSVfO.png";
+            fg.src = "xflappy_bird_fg.png.pagespeed.ic.O7woT1tHrR.png";
+            pipeUp.src = "xflappy_bird_pipeUp.png.pagespeed.ic.C2APYlZeLS.png";
+            pipeBottom.src = "xflappy_bird_pipeBottom.png.pagespeed.ic.l4xtKTx5NW.png";
+
+            var gap = 90;
+
+            document.addEventListener("click", jump);
+            document.addEventListener("touchstart", jump);
+
+            function jump() {
+                yPos -= 25;
+            }
+
+            var pipe = [];
+
+            pipe[0] = {
+                x: cvs.width,
+                y: 0
+            }
+
+            var score = 0;
+            var xPos = 10;
+            var yPos = 150;
+            var grav = 1.5;
+
+            function draw() {
+                ctx.drawImage(bg, 0, 0);
+
+                for(var i = 0; i < pipe.length; i++) {
+                    ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y);
+                    ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeUp.height + gap);
+
+                    pipe[i].x--;
+
+                    if(pipe[i].x === 125) {
+                        pipe.push({
+                            x: cvs.width,
+                            y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height
+                        });
+                    }
+
+                    if(xPos + bird.width >= pipe[i].x
+                       && xPos <= pipe[i].x + pipeUp.width
+                       && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap)
+                       || yPos + bird.height >= cvs.height - fg.height) {
+                        // Остановка игры
+                        return;
+                    }
+
+                    if(pipe[i].x === 5) {
+                        score++;
+                    }
+                }
+
+                ctx.drawImage(fg, 0, cvs.height - fg.height);
+                ctx.drawImage(bird, xPos, yPos);
+
+                yPos += grav;
+                ctx.fillStyle = "#000";
+                ctx.font = "24px Verdana";
+                ctx.fillText("Счет: " + score, 10, cvs.height - 20);
+
+                requestAnimationFrame(draw);
+            }
+
+            bird.onload = function() {
+                draw();
+            };
+        });
+        document.getElementById("restartButton").addEventListener("click", function() {
+            location.reload();  // Перезапускаем игру при нажатии на кнопку
+        });
+    </script>
 </body>
 </html>
+
