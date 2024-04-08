@@ -1,2 +1,2 @@
 # Swetlana
-Светлана: href="https://school-33.github.io/Swetlana/
+Светлана: https://school-33.github.io/Swetlana/
